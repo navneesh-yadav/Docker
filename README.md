@@ -1,10 +1,14 @@
-# Getting Started with Create React App
+# Creating Docker Image 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is for creating docker image and optimising its size by using Multistage image building for Simple react app.
 
-## Available Scripts
+## Simple docker image creation. 
 
-In the project directory, you can run:
+
+Here, we will be creating simple docker file to build image ,
+
+file:///home/navi/Pictures/dockerfile.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/4fd699dc-a12a-4e56-9bb3-a99a8f28976f)
+
 
 ### `npm start`
 
