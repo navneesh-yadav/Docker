@@ -7,7 +7,7 @@ This project is for creating docker image and optimising its size by using Multi
 
 Here, we will be creating simple docker file to build image ,
 
-file:///home/navi/Pictures/dockerfile.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/4fd699dc-a12a-4e56-9bb3-a99a8f28976f)
+dockerfile1![image](https://github.com/navneesh-yadav/Docker/assets/66907873/4fd699dc-a12a-4e56-9bb3-a99a8f28976f)
 
 
 ### `npm start`
