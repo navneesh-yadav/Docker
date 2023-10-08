@@ -10,66 +10,88 @@ Here, we will be creating simple docker file to build image ,
 dockerfile1![image](https://github.com/navneesh-yadav/Docker/assets/66907873/4fd699dc-a12a-4e56-9bb3-a99a8f28976f)
 
 
-### `npm start`
+### `docker build -t myapp`
+Using this command will be building image now.
+Let see the process of image creation
+buildprocess.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/f72b7a34-eb2f-432a-8a19-16973553cc53)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+It seems everything fine , let's check if image is creating or not !
+### `docker images`
+The above command will help to check the image created or exist in our local dir.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+myappimage.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/2fb592dc-7eb7-4350-9d64-c2396b798f03)
 
-### `npm test`
+Let's analyse the output
+This commands has given few details like Repo (IMAGE NAME), TAG , CREATED, SIZE.
+Everything looks fine, lets try to run image as container.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `docker run  <ImageName>`
+Here the command will be `docker run myapp`
+dockerrun.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/5400037c-83f3-45b4-bb56-290940c5072a)
 
-### `npm run build`
+It seems the container is running , Lets check for the output
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+output.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/86665950-9991-4cc1-a79d-dea7d2f801e9)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Everything is fine, but seems the image is of too large size 1.31GB
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Lets try to optimize
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+As we know the alpine images are less in size, lets try to use it in dockerfile
+ 
+Usingalpine.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/3ca1ab9a-14df-42d6-86fa-7fa475a772ab)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Lets build it again trying the above command `docker build -t myapp:opt .` 
+Here "opt" is tag to differentiate images.
+Have skipped the process and now only checking the image after build using ~docker images ~
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+nodealpine.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/2128bdde-4ff2-43a9-b5a1-bbf88fdf1291)
 
-## Learn More
+The file is now  490MB which was earlier 1.31GB approx the file size reduced by #### 62.6 %.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Can we reduce the file size , yes lets move to try multi stage building.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#Multistage building : 
+  1. Will use alpine image to build dependencies
+  2. Will copy this dependencies in nginx web service and delete the rest of part.
+  
+Let's checkout 
 
-### Code Splitting
+image-nginx.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/66b7d1e5-149e-473e-8547-cad6caa0a2b7)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+using above dockerfile will create the image again use the same command to bulid image `docker build -t myapp:alpine .`
 
-### Analyzing the Bundle Size
+Now the lets check image size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Imagenginx.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/b6d291d3-ba11-4570-909c-d0be4c6f8483)
 
-### Making a Progressive Web App
+Now the image size  is 134MB , its reduced to #### 89.73 %.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Can this be reduced more ?
+We have use nginx general image, can we try with alpine image.
 
-### Advanced Configuration
+nginx-alpine.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/0032e880-792e-4a0e-a81f-87372cb8e7cc)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Let's build the image using command `docker build -t myapp:nginxalpine`
 
-### Deployment
+Lets check the output 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+nginx-alpine.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/75a77990-1415-43b4-b2d8-c920c048da9f)
 
-### `npm run build` fails to minify
+Wow the image size is now 23.3 MB, wiz reduction of #### 98.18 %
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Docker
+Lets check output by running container `docker run myapp:nginxalpine`
+Since we are using nginx the port 80 is by default port.
+
+applicationrunningwithmyapp:nginxalpine.png![image](https://github.com/navneesh-yadav/Docker/assets/66907873/504a82c3-cd99-4a00-a4d6-2b206411dd7e)
+
+It's fine now.
+
+#Conclusion using few steps we have reduced the image size by #### 98 %.
+
+Note: The react app used in this project is created by Navnish the owner of this repo.
+
+
+
