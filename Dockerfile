@@ -1,3 +1,4 @@
+# Optimised approach to create docker image
 # stage 1
 FROM  node:17-alpine as builder
 
